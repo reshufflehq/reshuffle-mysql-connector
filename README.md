@@ -1,52 +1,67 @@
-## BEGIN - TO DELETE TILL END
+# reshuffle-mysql-connector
 
-THIS IS A TEMPLATE REPO FOR NEW RESHUFFLE CONNECTORS
-1. Create a new connector repo from this template using this link https://github.com/reshufflehq/reshuffle-template-connector/generate
-2. Clone the repo locally
-3. Rename all occurrences of _CONNECTOR_NAME_
-4. `npm install`
-5. `npm run build:watch`
-6. Implement your events/actions in `src/index.ts`
-7. `npm run lint`
-8. Push your code
-9. Go to https://app.circleci.com/projects/project-dashboard/github/reshufflehq/
-    a. You should see your new connector repo
-    b. click on `Set Up Project` for the repo
-    c. click on `Use Existing Config`
-    d. click on `Start Building`
+[Code](https://github.com/reshufflehq/reshuffle-mysql-connector) |
+[npm](https://www.npmjs.com/package/reshuffle-mysql-connector) |
+[Code sample](https://github.com/reshufflehq/reshuffle-mysql-connector/tree/master/examples)
 
-10. If circle CI checks are all green, you are all set!
+`npm install reshuffle-mysql-connector`
 
-// Keep documentation template below
+### Reshuffle MySQL Connector
 
-## END
+This package contains a [Reshuffle](https://github.com/reshufflehq/reshuffle)
+connector to MySQL databases.
 
-# reshuffle-_CONNECTOR_NAME_-connector
+The connector uses [Node MySQL 2 Client](https://www.npmjs.com/package/mysql2) package.
 
-### Reshuffle _CONNECTOR_NAME_ Connector
+The following example lists all information from the "users" table:
 
-This connector provides <description>.
+```js
+const { Reshuffle } = require('reshuffle')
+const { MySQLConnector } = require('reshuffle-mysql-connector')
 
-#### Configuration Options:
-```typescript
-interface _CONNECTOR_NAME_ConnectorConfigOptions {
-  foo: string // foo description
-  bar?: number // bar description
-}
+  const app = new Reshuffle()
+  const mysql = new MySQLConnector(app)
+  const connection = mysql.sdk().createConnection({
+    host: 'DB_HOST',
+    user: 'DB_USERNAME',
+    password: 'DB_PASSWORD',
+    database: 'DB_NAME'
+  })
+  connection.execute(
+    'SELECT * FROM `Users` WHERE `name` = ? AND `age` > ?', ['Rick', 25],
+    function(err, results, fields) {
+      console.log('a: ',results); // results contains rows returned by server
+      console.log('b: ',fields); // fields contains extra meta data about results, if available   
+    }
+  )
+
 ```
 
-#### Connector events
+#### Table of Contents
 
-##### event1 description
-The connector fires this event when ...
+_Connector actions_:
 
-##### event2 description
-The connector fires this event when ...
+[sdk](#sdk) Retrieve the client sdk object
+
+[sdkPromise](#sdkPromise) Retrieve the client sdk object with support of Promise API
 
 #### Connector actions
 
-##### action1
-The connector provides action1 which ...
+##### <a name="sdk"></a>Full access to the MySQL Client SDK
 
-##### action2
-The connector provides action2 which ...
+
+```js
+const sdk = mysql.sdk()
+```
+
+More details and code samples about Node MySQL 2 Client can be found [here](https://www.npmjs.com/package/mysql2)
+
+
+##### <a name="sdkPromise"></a>Full access to the MySQL Client SDK with support of Promise API
+
+
+```js
+const sdkPromise = mysql.sdkPromise()
+```
+
+More details and code samples about Node MySQL 2 Promise API can be found [here](https://www.npmjs.com/package/mysql2#using-promise-wrapper)

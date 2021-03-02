@@ -37,7 +37,7 @@ export default class MySQLConnector extends BaseConnector {
         rowCount: rows ? Object.keys(rows).length : 0,
       }
     } catch (error) {
-      console.log(error)
+      this.app.getLogger().error(error)
     }
   }
 
@@ -58,7 +58,7 @@ export default class MySQLConnector extends BaseConnector {
       await conn.commit()
       return ret
     } catch (error) {
-      console.log(error)
+      this.app.getLogger().error(error)
       await conn.rollback()
       throw error
     } finally {

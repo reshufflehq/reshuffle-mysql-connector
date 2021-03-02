@@ -109,7 +109,7 @@ const age = await mysql.query(
 This action returns an object with the results of the query, where
 `fields` is an array of all field names, as returned by the query.
 Field names in a `SELECT` query are column names, or are specified
-with an `AS` clause. Every element of `rows` is uses the names in
+with an `AS` clause. Every element of `rows` uses the names in
 `fields` as its object keys.
 
 Note that every call to `query` may use a different database connection.
@@ -122,7 +122,7 @@ if such a guarantee is required.
 ```js
 const res = await mysql.sequence(async (query) => {
   await query("INSERT INTO users VALUES ('Miles', 'Davis', 43)")
-  return query("SELECT COUNT(*) FROM users where 1")
+  return query("SELECT COUNT(*) FROM users")
 })
 const userCount = res.rows[0].count
 
@@ -164,7 +164,7 @@ balance:
 
 ```js
   const accountId = 289
-  const change = +1000
+  const change = 1000
   mysql.transaction(async (query) => {
     await query(`
       UPDATE accounts
@@ -195,7 +195,7 @@ const connection = await mysql.sdk().createConnection({
   database: process.env.DB_NAME 
 })
 
-const [rows, fields] = await connection.execute('SELECT * FROM `Users` where 1')
+const [rows, fields] = await connection.execute('SELECT * FROM Users')
 console.log('rows: ',rows)
 console.log('fields: ',fields)
 
